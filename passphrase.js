@@ -33,12 +33,10 @@ rl.on('close', () => {
 });
 
 function getRandomWords(words, count) {
-    const randomWords = [];
-    while (randomWords.length < count) {
+    const randomWords = new Set();
+    while (randomWords.size < count) {
         const randomWord = words[Math.floor(Math.random() * words.length)];
-        if (!randomWords.includes(randomWord)) {
-            randomWords.push(randomWord);
-        }
+        randomWords.add(randomWord);
     }
-    return randomWords;
+    return [...randomWords];
 }
