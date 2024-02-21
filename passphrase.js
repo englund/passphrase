@@ -2,7 +2,7 @@ const readline = require('readline');
 const fs = require('fs');
 
 const path = process.argv[2];
-const n = process.argv[3] ?? 1;
+const numPassphrases = process.argv[3] ?? 1;
 
 const validWordLength = [4, 5];
 const illegalChars = ['-', '.'];
@@ -26,7 +26,7 @@ rl.on('line', (word) => {
 
 rl.on('close', () => {
     console.log('Word count:', words.length);
-    for (let i = 0; i < n; i++) {   
+    for (let i = 0; i < numPassphrases; i++) {   
         const passphrase = getRandomWords(words, 6).join(' ');
         console.log(passphrase);
     }
