@@ -8,11 +8,11 @@ use rand::seq::IteratorRandom;
 #[command(version, about, long_about = None)]
 struct Cli {
     /// Number of words in the passphrase
-    #[arg(long, default_value_t = 6)]
-    num_words: u32,
+    #[arg(short, long, default_value_t = 6)]
+    length: u32,
 
     /// Number of passphrases to generate
-    #[arg(long, default_value_t = 1)]
+    #[arg(short, long, default_value_t = 1)]
     num_passphrases: u32,
 }
 
@@ -28,7 +28,7 @@ fn main() {
     }
 
     for _ in 0..args.num_passphrases {
-        let passphrase = generate_passphrase(&all_words, args.num_words);
+        let passphrase = generate_passphrase(&all_words, args.length);
         println!("{}", passphrase);
     }
 }
