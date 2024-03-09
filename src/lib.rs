@@ -6,8 +6,7 @@ pub fn read_words(file: Option<PathBuf>) -> io::Result<Vec<String>> {
     let mut all_words = Vec::new();
 
     let reader: Box<dyn BufRead> = match file {
-        Some(file) => Box::new(BufReader::new(File::open(file)
-            .expect("Failed to open file."))),
+        Some(file) => Box::new(BufReader::new(File::open(file)?)),
         None => Box::new(BufReader::new(stdin.lock())),
     };
 

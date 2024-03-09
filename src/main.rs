@@ -28,8 +28,13 @@ fn main() -> io::Result<()>  {
         std::process::exit(1);
     }
 
-    let all_words = read_words(args.file)?;
-
+    let all_words = match read_words(args.file) {
+        Ok(words) => words, 
+        Err(e) => {
+            eprintln!("Failed to read words: {}", e);
+            std::process::exit(1);
+        }
+    };
     for _ in 0..args.num_passphrases {
         let passphrase = generate_passphrase(&all_words, args.length);
         println!("{}", passphrase);
