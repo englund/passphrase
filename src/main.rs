@@ -33,6 +33,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             return Err(format!("Failed to read words: {}", e).into());
         }
     };
+    
     for _ in 0..args.num_passphrases {
         let passphrase = generate_passphrase(&all_words, args.length);
         println!("{}", passphrase);
