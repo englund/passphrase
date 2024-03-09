@@ -1,5 +1,6 @@
 use clap::Parser;
 use std::io::{self, BufRead};
+use std::path::Path;
 
 use passphrase::generate_passphrase;
 
@@ -32,6 +33,11 @@ fn main() {
     }
 
     let reader: Box<dyn BufRead> = if let Some(file) = args.file {
+        if !Path::new(&file).exists() {
+            eprintln!("File does not exist.");
+            std::process::exit(1);
+        }
+        
         Box::new(io::BufReader::new(std::fs::File::open(file).unwrap()))
     } else {
         Box::new(io::BufReader::new(stdin.lock()))
