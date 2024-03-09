@@ -13,6 +13,11 @@ struct Cli {
     /// Number of passphrases to generate
     #[arg(short, long, default_value_t = 1)]
     num_passphrases: u32,
+
+    /// File containing words to use for passphrases.
+    /// If not provided, words are read from stdin.
+    #[arg(short, long)]
+    file: Option<String>,
 }
 
 fn main() {
@@ -21,7 +26,18 @@ fn main() {
     let stdin = io::stdin();
     let mut all_words = Vec::new();
 
-    for line in stdin.lock().lines() {
+    if atty::is(atty::Stream::Stdin) && args.file.is_none() {
+        eprintln!("No input provided. Please provide a file or pipe input.");
+        std::process::exit(1);
+    }
+
+    let reader: Box<dyn BufRead> = if let Some(file) = args.file {
+        Box::new(io::BufReader::new(std::fs::File::open(file).unwrap()))
+    } else {
+        Box::new(io::BufReader::new(stdin.lock()))
+    };
+
+    for line in reader.lines() {
         let line = line.unwrap();
         all_words.push(line);
     }
