@@ -2,7 +2,7 @@ use clap::Parser;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
-use passphrase::generate_passphrase;
+use passphrase::{generate_passphrase, read_words};
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -21,30 +21,20 @@ struct Cli {
     file: Option<String>,
 }
 
-fn main() {
+fn main() -> io::Result<()>  {
     let args = Cli::parse();
-
-    let stdin = io::stdin();
-    let mut all_words = Vec::new();
 
     if atty::is(atty::Stream::Stdin) && args.file.is_none() {
         eprintln!("No input provided. Please provide a file or pipe input.");
         std::process::exit(1);
     }
 
-    let reader: Box<dyn BufRead> = match args.file {
-        Some(file) => Box::new(BufReader::new(File::open(file)
-            .expect("Failed to open file"))),
-        None => Box::new(BufReader::new(stdin.lock())),
-    };
-
-    for line in reader.lines() {
-        let line = line.unwrap();
-        all_words.push(line);
-    }
+    let all_words = read_words(args.file)?;
 
     for _ in 0..args.num_passphrases {
         let passphrase = generate_passphrase(&all_words, args.length);
         println!("{}", passphrase);
     }
+
+    Ok(())
 }
