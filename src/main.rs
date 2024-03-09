@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::{io, path::PathBuf};
+use std::path::PathBuf;
 
 use passphrase::{generate_passphrase, read_words};
 
