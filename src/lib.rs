@@ -19,8 +19,7 @@ pub fn read_words(file: Option<PathBuf>) -> io::Result<Vec<String>> {
 
 pub fn generate_passphrase(words: &Vec<String>, num_words: u32) -> String {
     let random_words = get_unique_random_words(words, num_words);
-    let passphrase = random_words.join(" ");
-    passphrase
+    random_words.join(" ")
 }
 
 fn get_unique_random_words(words: &Vec<String>, num_words: u32) -> Vec<String> {
