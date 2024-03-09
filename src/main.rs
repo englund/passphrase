@@ -1,6 +1,5 @@
 use clap::Parser;
-use std::fs::File;
-use std::io::{self, BufRead, BufReader};
+use std::{io, path::PathBuf};
 
 use passphrase::{generate_passphrase, read_words};
 
@@ -18,7 +17,7 @@ struct Cli {
     /// File containing words to use for passphrases.
     /// If not provided, words are read from stdin.
     #[arg(short, long)]
-    file: Option<String>,
+    file: Option<PathBuf>,
 }
 
 fn main() -> io::Result<()>  {

@@ -1,7 +1,7 @@
-use std::{collections::HashSet, fs::File, io::{self, BufRead, BufReader}};
+use std::{collections::HashSet, fs::File, io::{self, BufRead, BufReader}, path::PathBuf};
 use rand::seq::IteratorRandom;
 
-pub fn read_words(file: Option<String>) -> io::Result<Vec<String>> {
+pub fn read_words(file: Option<PathBuf>) -> io::Result<Vec<String>> {
     let stdin = io::stdin();
     let mut all_words = Vec::new();
 
@@ -12,7 +12,7 @@ pub fn read_words(file: Option<String>) -> io::Result<Vec<String>> {
     };
 
     for line in reader.lines() {
-        let line = line.unwrap();
+        let line = line?;
         all_words.push(line);
     }
 
