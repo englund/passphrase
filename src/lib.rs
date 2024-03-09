@@ -30,7 +30,10 @@ fn get_unique_random_words(words: &Vec<String>, num_words: u32) -> Vec<String> {
     let mut random_words = HashSet::new();
 
     while random_words.len() < num_words as usize {
-        let random_word = words.iter().choose(&mut rng).unwrap().clone();
+        let random_word = match words.iter().choose(&mut rng) {
+            Some(word) => word.clone(),
+            None => continue,
+        };
         random_words.insert(random_word);
     }
 
