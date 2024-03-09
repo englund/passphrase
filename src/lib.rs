@@ -11,8 +11,7 @@ pub fn read_words(file: Option<PathBuf>) -> io::Result<Vec<String>> {
     };
 
     for line in reader.lines() {
-        let line = line?;
-        all_words.push(line);
+        all_words.push(line?);
     }
 
     Ok(all_words)
