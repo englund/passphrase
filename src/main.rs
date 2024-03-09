@@ -20,7 +20,7 @@ struct Cli {
     file: Option<PathBuf>,
 }
 
-fn main() -> io::Result<()>  {
+fn main() {
     let args = Cli::parse();
 
     if atty::is(atty::Stream::Stdin) && args.file.is_none() {
@@ -39,6 +39,4 @@ fn main() -> io::Result<()>  {
         let passphrase = generate_passphrase(&all_words, args.length);
         println!("{}", passphrase);
     }
-
-    Ok(())
 }
