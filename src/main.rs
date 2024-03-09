@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::path::PathBuf;
+use std::{error::Error, path::PathBuf};
 
 use passphrase::{generate_passphrase, read_words};
 
@@ -20,23 +20,23 @@ struct Cli {
     file: Option<PathBuf>,
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let args = Cli::parse();
 
     if atty::is(atty::Stream::Stdin) && args.file.is_none() {
-        eprintln!("No input provided. Please provide a file or pipe input.");
-        std::process::exit(1);
+        return Err("No input provided. Please provide a file or pipe input.".into());
     }
 
     let all_words = match read_words(args.file) {
         Ok(words) => words, 
         Err(e) => {
-            eprintln!("Failed to read words: {}", e);
-            std::process::exit(1);
+            return Err(format!("Failed to read words: {}", e).into());
         }
     };
     for _ in 0..args.num_passphrases {
         let passphrase = generate_passphrase(&all_words, args.length);
         println!("{}", passphrase);
     }
+
+    Ok(())
 }
